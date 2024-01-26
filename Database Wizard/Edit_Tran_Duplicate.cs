@@ -96,6 +96,10 @@ namespace Database_Wizard
             {
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
                 string slNO = selectedRow.Cells["SLNO"].Value.ToString();
+                DialogResult r = MessageBox.Show($"Do you realy want to delete {selectedRow.Cells["RCPTNO"].Value}?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (r != DialogResult.Yes)
+                    return;
+
                 try
                 {
                     SqlConnection conn = new SqlConnection(connStr);

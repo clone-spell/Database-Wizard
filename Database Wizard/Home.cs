@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Database_Wizard
 {
     public partial class Home : Form
     {
-        private DateTime exp = DateTime.Parse("01/01/2024");
+        private DateTime exp = DateTime.Parse("01/04/2024"); // dd/MM/yyyy
         private Form activeForm;
+        private ServiceController sqlServiceController;
         public Home()
         {
             InitializeComponent();
         }
         private void Home_Load(object sender, EventArgs e)
         {
+
+            //expiry
             if(exp <= DateTime.Now)
             {
                 sqlServerToolStripMenuItem.Enabled = false;
@@ -38,6 +35,15 @@ namespace Database_Wizard
             if(dialogLogin != DialogResult.OK)
             {
                 Application.Exit();
+            }
+
+
+            //service control
+            ServiceController[] services = ServiceController.GetServices();
+            sqlServiceController = services.Where(x=>x.DisplayName.StartsWith("SQL Server (")).FirstOrDefault();
+            if(sqlServiceController == null)
+            {
+                MessageBox.Show("Sql Server Not Found\nContact tech support", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -59,20 +65,49 @@ namespace Database_Wizard
 
 
 
-
-
-
         //sql server menu item clicks
-
         private void startDatabasesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Under Development");
+            try
+            {
+                if (sqlServiceController.Status != ServiceControllerStatus.Running)
+                {
+                    sqlServiceController.Start();
+                    sqlServiceController.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
+                    MessageBox.Show("SQL Server service started successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"SQL Server Service is Already Running.", "Running", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }catch (Exception ex)
+            {
+                MessageBox.Show($"SQL Server service start failed.\nDescription: {ex.Message}", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
 
         private void stopSQLServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Under Development");
+            try
+            {
+                if (sqlServiceController.Status == ServiceControllerStatus.Running)
+                {
+                    sqlServiceController.Stop();
+                    sqlServiceController.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
+                    MessageBox.Show("SQL Server service stoped successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"SQL Server Service is Already Stopped.", "Stopped", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to Stop SQL Server Service.\nDescription: {ex.Message}", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void databasesSQLServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowFormInPanel(new SQLServer_Databases());

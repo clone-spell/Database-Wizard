@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Database_Wizard
@@ -61,5 +55,80 @@ namespace Database_Wizard
                 connection.Close();
             }
         }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.ColumnIndex < 0 && e.RowIndex < dataGridView1.Rows.Count-1) // Right-click on row header cell
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    row.Selected = false;
+                }
+                dataGridView1.Rows[e.RowIndex].Selected = true;
+                contextMenuStrip.Show(Cursor.Position);
+            }
+        }
+
+        private void copyForRepaymentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                try
+                {
+                    DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+                    string s = "REPAYMENT ID DETAILS:\n\n" +
+                        $"\nKiosk Name : {selectedRow.Cells["OFF_NAME"].Value}" +
+                        $"\nConsumer Name : {selectedRow.Cells["NAME"].Value}" +
+                        $"\nConsumer ID : {selectedRow.Cells["CON_ID"].Value}" +
+                        $"\nPaid Amount : {selectedRow.Cells["AMOUNT"].Value}" +
+                        $"\nPayment Date : {selectedRow.Cells["PAY_DT"].Value}" +
+                        $"\nPayment Month : {selectedRow.Cells["PAIDBILLMONTH"].Value}";
+
+                    Clipboard.SetText(s);
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            connStr = $"Data Source={Environment.MachineName};Initial Catalog={cbDatabase.Text};Integrated Security=SSPI;";
+
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+                string slNO = selectedRow.Cells["SLNO"].Value.ToString();
+                DialogResult r = MessageBox.Show($"Do you realy want to delete {selectedRow.Cells["RCPTNO"].Value}?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (r != DialogResult.Yes)
+                    return;
+
+                try
+                {
+                    SqlConnection conn = new SqlConnection(connStr);
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"delete from transactions where slno='{slNO}';", conn);
+                    int i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                    if (i > 0)
+                    {
+                        MessageBox.Show("Deleted Successfuly", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"{i} rows effected", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+
+
     }
 }

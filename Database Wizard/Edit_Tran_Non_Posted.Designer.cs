@@ -127,6 +127,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(784, 482);
             this.dataGridView1.TabIndex = 11;
+            this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
             // contextMenuStrip
@@ -135,19 +136,21 @@
             this.copyForRepaymentToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(186, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(186, 70);
             // 
             // copyForRepaymentToolStripMenuItem
             // 
             this.copyForRepaymentToolStripMenuItem.Name = "copyForRepaymentToolStripMenuItem";
             this.copyForRepaymentToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.copyForRepaymentToolStripMenuItem.Text = "Copy For Repayment";
+            this.copyForRepaymentToolStripMenuItem.Click += new System.EventHandler(this.copyForRepaymentToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // Edit_Tran_Non_Posted
             // 

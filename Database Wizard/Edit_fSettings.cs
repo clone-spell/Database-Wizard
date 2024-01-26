@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Database_Wizard
@@ -16,6 +10,7 @@ namespace Database_Wizard
         public Edit_fSettings()
         {
             InitializeComponent();
+            cbDatabase.SelectedIndex = 0;
         }
 
 
@@ -59,9 +54,6 @@ namespace Database_Wizard
                 updateCommand.ExecuteNonQuery();
                 connection.Close();
             }
-
-
-            LoadfSettings(cbDatabase.Text);
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)

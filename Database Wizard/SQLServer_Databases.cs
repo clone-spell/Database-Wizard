@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Database_Wizard
@@ -18,15 +11,6 @@ namespace Database_Wizard
         {
             InitializeComponent();
         }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -60,7 +44,6 @@ namespace Database_Wizard
                 MessageBox.Show($"Source : Load Databases\n\nDescription : {ex.Message}", "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void DeleteDatabase(string databaseName)
         {
@@ -96,6 +79,7 @@ namespace Database_Wizard
 
 
                 OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.InitialDirectory = @"D:\";
                 openFileDialog.Multiselect = true;
                 openFileDialog.Filter = "Database Files|*.mdf;*.ldf|All Files|*.*";
 
@@ -127,6 +111,7 @@ namespace Database_Wizard
                         connection.Open();
 
                         string attachQuery = $"sp_attach_db '{dbName}','{dbPath}','{dbLogPath}'";
+
                         SqlCommand cmd = new SqlCommand(attachQuery, connection);
                         cmd.ExecuteNonQuery();
                         connection.Close();
@@ -165,29 +150,11 @@ namespace Database_Wizard
 
 
 
-
-
-
-
-
-
-
-
         //load form
         private void SQLServer_Databases_Load(object sender, EventArgs e)
         {
             loadDatabases();
         }
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Database_Wizard
@@ -14,25 +7,39 @@ namespace Database_Wizard
     public partial class Edit_ServiceEng : Form
     {
         private string connStr;
+        private string engId;
         public Edit_ServiceEng()
         {
             InitializeComponent();
+            cbDatabase.SelectedIndex = 0;
+            txtDesig.SelectedIndex = 0;
         }
 
         private void LoadServiceEng(string database)
         {
+            engId = "";
+            txtName.Text = string.Empty;
+            txtDesig.SelectedIndex = 0;
             try
             {
                 connStr = $"Data Source={Environment.MachineName};Initial Catalog={database};Integrated Security=SSPI;";
-                using(SqlConnection conn = new SqlConnection(connStr))
+                listServiceEng.Items.Clear();
+                using (SqlConnection conn = new SqlConnection(connStr))
                 {
                     conn.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter("Select ID, Name, CreateDateTime, CSPYN from ServiceEng", conn);
+                    using(SqlCommand cmd = new SqlCommand("Select ID, Name, CreateDateTime, CSPYN from ServiceEng", conn))
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            ListViewItem item = new ListViewItem(reader["ID"].ToString());
+                            item.SubItems.Add(reader["Name"].ToString());
+                            item.SubItems.Add(reader["CSPYN"].ToString());
+                            item.SubItems.Add(reader["CreateDateTime"].ToString());
 
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    dataGridView.DataSource = dt;
+                            listServiceEng.Items.Add(item);
+                        }
+                    }
                     conn.Close();
                 }
             }
@@ -42,7 +49,6 @@ namespace Database_Wizard
             }
         }
 
-
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             LoadServiceEng(cbDatabase.Text);
@@ -50,22 +56,25 @@ namespace Database_Wizard
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(cbDatabase.Text != "")
-            {
-                connStr = $"Data Source={Environment.MachineName};Initial Catalog={cbDatabase.Text};Integrated Security=SSPI;";
-            }
-            else
-            {
-                MessageBox.Show("Select a database first");
-                return;
-            }
+            connStr = $"Data Source={Environment.MachineName};Initial Catalog={cbDatabase.Text};Integrated Security=SSPI;";
+            
             string query;
-            if(txtName.Text != "" && txtDesig.Text != "")
+            if(txtName.Text != "")
             {
-                if (txtDesig.Text == "CSP")
-                    query = $"insert into ServiceEng (Name, CSPYN, CreateDateTime) Values ('{txtName.Text}', 1, GETDATE())";
-                else
-                    query = $"insert into ServiceEng (Name, CSPYN, CreateDateTime) Values ('{txtName.Text}', 0, GETDATE())";
+                if(engId != "")//edit
+                {
+                    if (txtDesig.Text == "CSP")
+                        query = $"update ServiceEng set Name='{txtName.Text.ToUpper()}', CSPYN=1 where id={engId}";
+                    else
+                        query = $"update ServiceEng set Name='{txtName.Text.ToUpper()}', CSPYN=0 where id={engId}";
+                }
+                else//create
+                {
+                    if (txtDesig.Text == "CSP")
+                        query = $"insert into ServiceEng (Name, CSPYN, CreateDateTime) Values ('{txtName.Text.ToUpper()}', 1, GETDATE())";
+                    else
+                        query = $"insert into ServiceEng (Name, CSPYN, CreateDateTime) Values ('{txtName.Text.ToUpper()}', 0, GETDATE())";
+                }
             }
             else
             {
@@ -87,42 +96,57 @@ namespace Database_Wizard
             }
             catch(Exception ex)
             {
-                MessageBox.Show($"Message : Unable to insert {txtName.Text} name\n\nDescription : {ex.Message}");
+                MessageBox.Show($"Message : Unable to Save {txtName.Text}\n\nDescription : {ex.Message}");
             }
         }
 
         
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void listServiceEng_MouseClick(object sender, MouseEventArgs e)
         {
-            
-            if (dataGridView.SelectedRows.Count > 0)
+            if (e.Button == MouseButtons.Right)
             {
-                DataGridViewRow selectedRow = dataGridView.SelectedRows[0];
-                string id = selectedRow.Cells["ID"].Value.ToString();
-                DialogResult r = MessageBox.Show($"Do you want to delete {selectedRow.Cells["Name"].Value}?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (r != DialogResult.Yes)
-                    return;
-                try
+                if (listServiceEng.FocusedItem != null)
                 {
-                    SqlConnection conn = new SqlConnection(connStr);
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"delete from serviceEng where id='{id}';", conn);
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
+                    contextMenuStrip.Show(Cursor.Position);
+                }
+            }
+        }
 
-                    LoadServiceEng(cbDatabase.Text);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            engId = listServiceEng.FocusedItem.SubItems[0].Text;
+            txtName.Text = listServiceEng.FocusedItem.SubItems[1].Text;
+            if (listServiceEng.FocusedItem.SubItems[2].Text == "True")
+            {
+                txtDesig.SelectedIndex = 0;
             }
             else
             {
-                MessageBox.Show("Select a row to delete");
+                txtDesig.SelectedIndex = 1;
             }
+        }
 
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string id = listServiceEng.FocusedItem.SubItems[0].Text;
+            DialogResult r = MessageBox.Show($"Do you want to delete {listServiceEng.FocusedItem.SubItems[1].Text}?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (r != DialogResult.Yes)
+                return;
+            try
+            {
+                SqlConnection conn = new SqlConnection(connStr);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"delete from serviceEng where id='{id}';", conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                LoadServiceEng(cbDatabase.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
