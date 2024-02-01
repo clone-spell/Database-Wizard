@@ -34,8 +34,16 @@
             this.lblfSettings = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblRcptno = new System.Windows.Forms.Label();
+            this.lblReceiptPrinter = new System.Windows.Forms.Label();
+            this.lblCashAcceptor = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvWelkin)).BeginInit();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvWelkin
@@ -110,11 +118,84 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(27, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(144, 17);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Last Receipt Number :";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(27, 74);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(137, 17);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Receipt Printer Port :";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(27, 105);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(133, 17);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Cash Acceptor Port :";
+            // 
+            // lblRcptno
+            // 
+            this.lblRcptno.AutoSize = true;
+            this.lblRcptno.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRcptno.Location = new System.Drawing.Point(177, 43);
+            this.lblRcptno.Name = "lblRcptno";
+            this.lblRcptno.Size = new System.Drawing.Size(0, 17);
+            this.lblRcptno.TabIndex = 6;
+            // 
+            // lblReceiptPrinter
+            // 
+            this.lblReceiptPrinter.AutoSize = true;
+            this.lblReceiptPrinter.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReceiptPrinter.Location = new System.Drawing.Point(177, 74);
+            this.lblReceiptPrinter.Name = "lblReceiptPrinter";
+            this.lblReceiptPrinter.Size = new System.Drawing.Size(0, 17);
+            this.lblReceiptPrinter.TabIndex = 6;
+            // 
+            // lblCashAcceptor
+            // 
+            this.lblCashAcceptor.AutoSize = true;
+            this.lblCashAcceptor.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCashAcceptor.Location = new System.Drawing.Point(177, 105);
+            this.lblCashAcceptor.Name = "lblCashAcceptor";
+            this.lblCashAcceptor.Size = new System.Drawing.Size(0, 17);
+            this.lblCashAcceptor.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.lblCashAcceptor);
+            this.groupBox1.Controls.Add(this.lblRcptno);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.lblReceiptPrinter);
+            this.groupBox1.Location = new System.Drawing.Point(249, 281);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(287, 166);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Data";
+            // 
             // Edit_fSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 537);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.dgvWelkin);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -125,6 +206,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvWelkin)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -137,5 +220,12 @@
         private System.Windows.Forms.Label lblfSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblRcptno;
+        private System.Windows.Forms.Label lblReceiptPrinter;
+        private System.Windows.Forms.Label lblCashAcceptor;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

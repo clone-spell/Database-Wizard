@@ -34,8 +34,10 @@ namespace Database_Wizard
             {
                 MessageBox.Show(ex.Message);
             }
-
             lblfSettings.Text = "fSettings - " + database;
+
+            SetLabel();
+            
         }
 
         private void dgvWelkin_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -59,6 +61,20 @@ namespace Database_Wizard
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             LoadfSettings(cbDatabase.Text);
+        }
+
+        private static string GetDataByColumnName(DataGridView dgv, string columnName)
+        {
+            var r = dgv.Rows[0];
+            string cell = r.Cells[columnName].Value.ToString();
+            return cell;
+        }
+
+        private void SetLabel()
+        {
+            lblRcptno.Text = GetDataByColumnName(dgvWelkin, "LastReceiptNumberOnline");
+            lblCashAcceptor.Text = GetDataByColumnName(dgvWelkin, "CashAcceptorPort");
+            lblReceiptPrinter.Text = GetDataByColumnName(dgvWelkin, "ReceiptPrinterPort");
         }
     }
 }
