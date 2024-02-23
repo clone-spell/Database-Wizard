@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.ServiceProcess;
 using System.Windows.Forms;
 
 namespace Database_Wizard
@@ -51,6 +56,86 @@ namespace Database_Wizard
         private void label4_Click(object sender, EventArgs e)
         {
             panel1.Hide();
+        }
+
+        private void btnKeyboard_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("osk.exe");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Description:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSqlServer_Click(object sender, EventArgs e)
+        {
+            ServiceController[] services = ServiceController.GetServices();
+            ServiceController sqlServer = services.Where(x => x.DisplayName.StartsWith("SQL Server (")).FirstOrDefault();
+            ServiceController sqlServerAgent = services.Where(x => x.DisplayName.StartsWith("SQL Server Agent (")).FirstOrDefault();
+
+
+            EnableService(sqlServer);
+            EnableService(sqlServerAgent);
+
+            if(sqlServer.StartType == ServiceStartMode.Disabled || sqlServerAgent.StartType == ServiceStartMode.Disabled)
+            {
+                btnSqlServer.ForeColor = Color.Red;
+            }
+            else if(sqlServer.Status == ServiceControllerStatus.Stopped)
+            {
+                btnSqlServer.ForeColor = Color.Yellow;
+            }
+            else
+            {
+                btnSqlServer.ForeColor = Color.Green;
+            }
+        }
+
+        private void EnableService(ServiceController service)
+        {
+            if(service == null)
+            {
+                MessageBox.Show("Services Unavailable!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                if (service.StartType == ServiceStartMode.Disabled)
+                {
+                    using (Process process = new Process())
+                    {
+                        process.StartInfo.FileName = "sc";
+                        process.StartInfo.Arguments = $"config \"{service.ServiceName}\" start= auto";
+                        process.StartInfo.UseShellExecute = false;
+                        process.StartInfo.CreateNoWindow = true;
+                        process.Start();
+                        process.WaitForExit();
+                    }
+                    MessageBox.Show($"The Service({service.DisplayName}) is Enabled", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"The Service({service.DisplayName}) is Enabled", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                if (service.Status == ServiceControllerStatus.Stopped)
+                {
+                    service.Start();
+                    MessageBox.Show($"The Service({service.DisplayName}) Started", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"The Service({service.DisplayName}) Started", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error enabling {service.DisplayName}: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

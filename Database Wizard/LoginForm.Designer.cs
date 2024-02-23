@@ -37,12 +37,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnKeyboard = new System.Windows.Forms.Button();
+            this.btnSqlServer = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbUsers
             // 
-            this.cbUsers.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cbUsers.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.cbUsers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbUsers.FormattingEnabled = true;
             this.cbUsers.Location = new System.Drawing.Point(93, 60);
@@ -52,7 +54,7 @@
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 60);
             this.label1.Name = "label1";
@@ -62,7 +64,7 @@
             // 
             // txtPass
             // 
-            this.txtPass.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtPass.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.txtPass.Location = new System.Drawing.Point(93, 100);
             this.txtPass.Name = "txtPass";
             this.txtPass.Size = new System.Drawing.Size(262, 25);
@@ -71,7 +73,7 @@
             // 
             // label2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(16, 103);
             this.label2.Name = "label2";
@@ -81,10 +83,10 @@
             // 
             // button1
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.Location = new System.Drawing.Point(134, 160);
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.button1.Location = new System.Drawing.Point(77, 160);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 41);
+            this.button1.Size = new System.Drawing.Size(220, 41);
             this.button1.TabIndex = 3;
             this.button1.Text = "Log In";
             this.button1.UseVisualStyleBackColor = true;
@@ -123,13 +125,37 @@
             this.label3.TabIndex = 1;
             this.label3.Text = "Wrong Password";
             // 
+            // btnKeyboard
+            // 
+            this.btnKeyboard.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnKeyboard.Location = new System.Drawing.Point(77, 259);
+            this.btnKeyboard.Name = "btnKeyboard";
+            this.btnKeyboard.Size = new System.Drawing.Size(107, 41);
+            this.btnKeyboard.TabIndex = 3;
+            this.btnKeyboard.Text = "Keyboard";
+            this.btnKeyboard.UseVisualStyleBackColor = true;
+            this.btnKeyboard.Click += new System.EventHandler(this.btnKeyboard_Click);
+            // 
+            // btnSqlServer
+            // 
+            this.btnSqlServer.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnSqlServer.Location = new System.Drawing.Point(190, 259);
+            this.btnSqlServer.Name = "btnSqlServer";
+            this.btnSqlServer.Size = new System.Drawing.Size(107, 41);
+            this.btnSqlServer.TabIndex = 3;
+            this.btnSqlServer.Text = "Start Server";
+            this.btnSqlServer.UseVisualStyleBackColor = true;
+            this.btnSqlServer.Click += new System.EventHandler(this.btnSqlServer_Click);
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 239);
+            this.ClientSize = new System.Drawing.Size(375, 312);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btnSqlServer);
+            this.Controls.Add(this.btnKeyboard);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtPass);
             this.Controls.Add(this.label2);
@@ -139,9 +165,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(391, 278);
+            this.MaximumSize = new System.Drawing.Size(391, 351);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(391, 278);
+            this.MinimumSize = new System.Drawing.Size(391, 351);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
@@ -163,5 +189,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnKeyboard;
+        private System.Windows.Forms.Button btnSqlServer;
     }
 }
